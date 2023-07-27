@@ -1,6 +1,4 @@
 # Importiert requests zum Herunterladen der HTML-Datei.
-import time
-
 import requests
 
 # Importiert das Datumssystem.
@@ -64,13 +62,13 @@ def scrapeData(startDate: str, endDate: str, ID: str, type: str, filename: str):
         Number-Prices.
     """
 
-    # Formatiert die Art des angefragten Objektes:
+    # Formatiert die Art des angefragten Objektes.
     if type.lower() == "aktie":
         type = "STOCK"
     elif type.lower() == "index":
         type = "FUND"
     else:
-        print("Kein gültiger Typ")
+        print("Kein gültiger Typ.")
         return 0
 
     # Formatiert das Enddatum.
@@ -88,7 +86,7 @@ def scrapeData(startDate: str, endDate: str, ID: str, type: str, filename: str):
             # noinspection PyUnboundLocalVariable
             testDate = datetime.datetime(int(ftemp[2]), int(ftemp[1]), int(ftemp[0]))
         except ValueError:
-            print("Ungültiges Enddatums.")
+            print("Ungültiges Enddatum.")
             return 0
 
 
@@ -126,36 +124,31 @@ def scrapeData(startDate: str, endDate: str, ID: str, type: str, filename: str):
             ftemp[1] = 11
         startDate = f"{ftemp[2]}-{ftemp[1]}-{ftemp[0]}T00:00:00:000Z"
 
-    print(startDate)
-
+    # Zerlegt das Datum in eine datetime-Angabe.
     if startDate is not None:
         ftemp = startDate.split(".")
         startDate = f"{ftemp[2]}-{ftemp[1]}-{ftemp[0]}T00:00:00:000Z"
 
-    print(startDate)
+    ftemp = startDate.split("-")
+
     # Schaut nach der Validität des Anfangsdatums.
-    #try:
+    try:
         # noinspection PyUnboundLocalVariable
-        #testDate = datetime.datetime(int(ftemp[0]), int(ftemp[1]), int(ftemp[2].split(' ')[0]))
-    #except IndexError:
-        #testDate = datetime.datetime(int(ftemp[2]), int(ftemp[1]), int(ftemp[1].split(' ')[0]))
-
-    #except ValueError:
-    #    print("Ungültiges Startdatum.")
-    #    return 0
+        testDate = datetime.datetime(int(ftemp[0]), int(ftemp[1]), int(ftemp[2].split('T')[0]))
+    except ValueError:
+        print("Ungültiges Startdatum.")
+        return 0
 
 
-    body = requests.get(f"https://api.onvista.de/api/v1/instruments/{type}/25096683/chart_history?endDate={endDate}&idNotation={ID}&resolution=1D&startDate={startDate}")
+    body = requests.get(f"https://api.onvista.de/api/v1/instruments/{type}/{ID}/chart_history?endDate={endDate}&idNotation={ID}&resolution=1D&startDate={startDate}")
 
     jsonData = body.text
+    # Fängt einen Fehler bei der Datenanforderung ab.
     if "errorMessage" in jsonData:
         print("Die ID ist nicht korrekt.")
         return 0
 
-    print(jsonData.split("[")[1].count(","))
-
-
-
+    # Speichert die Datei als .json-Datei.
     try:
         with open(filename+'.json', 'w', encoding='utf-8') as f:
             json.dump(jsonData, f, ensure_ascii=False, indent=4)
@@ -195,7 +188,7 @@ if False:
             exit()
 
 # Demonstration
-# scrapeData(startDate="1j", endDate=None, filename="Fresenius", ID=1958612, type="Aktie")
-# scrapeData(startDate="1j", endDate=None, filename="Euro Stoxx 50", ID=13320012, type="Index")
+scrapeData(startDate="1j", endDate=None, filename="Fresenius", ID=1958612, type="Aktie")
+scrapeData(startDate="1j", endDate=None, filename="Euro Stoxx 50", ID=13320012, type="Index")
 
     
