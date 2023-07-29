@@ -4,7 +4,7 @@ import requests
 # Importiert das Datumssystem.
 import datetime
 
-# Importiert Jason zur Datenverarbeitung.
+# Importiert .json zur Datenverarbeitung.
 import json
 
 # Setzt die Abstände fest.
@@ -15,6 +15,7 @@ timeFrames = {
 }
 
 
+# Definiert die Methode zur Datenaqurierung.
 # noinspection PyUnusedLocal
 def OnvistaData(startDate: str, endDate: str, ID: str, type: str, filename: str):
     """ startDate: str
@@ -97,7 +98,7 @@ def OnvistaData(startDate: str, endDate: str, ID: str, type: str, filename: str)
         print("Das Anfangsdatum darf nicht frei bleiben.")
         return 0
 
-    # Berechnet die Differenz von einem Jahr
+    # Berechnet die Differenz von einem Jahr.
     elif startDate.lower() == "1j":
         endDate = str(datetime.datetime.now())
         ftemp = endDate.split("-")
@@ -141,7 +142,7 @@ def OnvistaData(startDate: str, endDate: str, ID: str, type: str, filename: str)
         print("Ungültiges Startdatum.")
         return 0
 
-
+    # Fragt die Daten der onvista-API an.
     body = requests.get(f"https://api.onvista.de/api/v1/instruments/{type}/{ID}/chart_history?endDate={endDate}&idNotation={ID}&resolution=1D&startDate={startDate}")
 
     jsonData = body.text
@@ -160,6 +161,6 @@ def OnvistaData(startDate: str, endDate: str, ID: str, type: str, filename: str)
         return 0
 
 
-# Demonstration
+# Demonstration.
 OnvistaData(startDate="1j", endDate=None, filename="Fresenius", ID=1958612, type="Aktie")
 OnvistaData(startDate="1j", endDate=None, filename="Euro Stoxx 50", ID=13320012, type="Index")
