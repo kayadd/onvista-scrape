@@ -98,14 +98,14 @@ def OnvistaData(startDate: str, endDate: str, ID: str, type: str, filename: str)
         return 0
 
     # Berechnet die Differenz von einem Jahr
-    if startDate.lower() == "1j":
+    elif startDate.lower() == "1j":
         endDate = str(datetime.datetime.now())
         ftemp = endDate.split("-")
 
         startDate = f"{str(int(ftemp[0])-1)}-{ftemp[1]}-{str(ftemp[2].split(' ')[0])}T00:00:00:000Z"
 
     # Berechnet die Differenz der 6 Monate.
-    if startDate.lower() == "6m":
+    elif startDate.lower() == "6m":
         endDate = str(datetime.datetime.now())
         ftemp = endDate.split("-")
 
@@ -117,7 +117,7 @@ def OnvistaData(startDate: str, endDate: str, ID: str, type: str, filename: str)
         startDate = f"{ftemp[2]}-{ftemp[1]}-{ftemp[0]}T00:00:00:000Z"
 
     # Berechnet die Different von einem Monat.
-    if startDate.lower() == "1m":
+    elif startDate.lower() == "1m":
         endDate = str(datetime.datetime.now())
         ftemp = endDate.split("-")
 
@@ -127,7 +127,7 @@ def OnvistaData(startDate: str, endDate: str, ID: str, type: str, filename: str)
         startDate = f"{ftemp[2]}-{ftemp[1]}-{ftemp[0]}T00:00:00:000Z"
 
     # Zerlegt das Datum in eine datetime-Angabe.
-    if startDate is not None:
+    else:
         ftemp = startDate.split(".")
         startDate = f"{ftemp[2]}-{ftemp[1]}-{ftemp[0]}T00:00:00:000Z"
 
