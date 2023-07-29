@@ -20,7 +20,7 @@ startDate: str <br>
         or must be a valid date.<br>
 
   endDate: str <br>
-        Must be a valid date or None. If the parameter is set to None it will assume the last possible date. <br>
+        Must be a valid date or None. If the parameter is set to None it will assume the last possible date, which should be the data of the           last day <br>
 
 ID: str <br>
         The id must be the internal onvista-ID. How to find these data is described in the help-section <br>
