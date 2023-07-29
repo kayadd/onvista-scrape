@@ -16,7 +16,7 @@ timeFrames = {
 
 
 # noinspection PyUnusedLocal
-def scrapeData(startDate: str, endDate: str, ID: str, type: str, filename: str):
+def OnvistaData(startDate: str, endDate: str, ID: str, type: str, filename: str):
     """ startDate: str
         Kann eines dieser Kürzel haben {
             '1j': Ein Jahr
@@ -50,8 +50,10 @@ def scrapeData(startDate: str, endDate: str, ID: str, type: str, filename: str):
         erste Zahl in dem Dateinamen
 
         Finden der onvista-ID für Indizes:
-        -Im angeklickten Link zum Index ist dies die letzte Zahl. Davor steht das Prefix: ?notation=
-
+        - Oft steht die onvista-ID im Link nach dem Kürzel "notation", es ist aber auch immer möglich auf die
+        Schaltfläche "alle Kurse" zu gehen und dort die .cvs-Datei herunterzuladen. Dort findet man nun die onvista-ID
+        wieder im Dateikürzel.
+        
         Importieren einer .json-Datei in eine .Excel-Datei:
         https://www.howtogeek.com/775651/how-to-convert-a-json-file-to-microsoft-excel/
 
@@ -158,37 +160,6 @@ def scrapeData(startDate: str, endDate: str, ID: str, type: str, filename: str):
         return 0
 
 
-# Regelt die Eingabe.
-if False:
-    a = 1
-    # Modell der Einzeleingabe.
-    while a == 0:
-        pstartDate = input("Bitte geben sie das Startdatum oder das Zeitraumkürzel('1j', '6m', `1m`) ein: ")
-        pendDate = input("Bitte geben sie das Enddatum ein: ")
-        pfileName = input("Bitte gib den Dateinamen der .json-Datei ein: ")
-        pID = input("Bitte gib die onvista-ID des Finanzobjektes ein: ")
-        ptype = input("Bitte gib den Typ des Finanzobjektes('Aktie' oder 'Index') ein:")
-
-        scrapeData(startDate=pstartDate, endDate=pendDate, filename=pfileName, ID=pID, type=ptype)
-
-    # Modell der Abgabe durch eine Dateieingabe der Daten und den Zeitraum.
-    # Die Einteilung erfolgt innerhalb der Datei in dieser Reihenfolge:
-    # onvista-ID, Dateiname, Finanzobjekttyp
-    # Beispiel; 0234598, Amazon, Aktie
-    pstartDate = input("Bitte geben sie das Startdatum oder das Zeitraumkürzel('1j', '6m', `1m`) ein: ")
-    pendDate = input("Bitte geben sie das Enddatum ein: ")
-    mFile = input("Bitte geben sie die .txt-Datei mit den Dateibezeichnungen, dem Typ und dem Onvista-Index an: ")
-
-    fdata = open(mFile, "r")
-    data = fdata.readlines()
-
-    for i in range(len(data)):
-        temp = data[i].replace("\n", "").split(",")
-        if scrapeData(startDate=pstartDate, endDate=pendDate, filename=temp[1], ID=temp[0], type=temp[2]) is 0:
-            exit()
-
 # Demonstration
-scrapeData(startDate="1j", endDate=None, filename="Fresenius", ID=1958612, type="Aktie")
-scrapeData(startDate="1j", endDate=None, filename="Euro Stoxx 50", ID=13320012, type="Index")
-
-    
+OnvistaData(startDate="1j", endDate=None, filename="Fresenius", ID=1958612, type="Aktie")
+OnvistaData(startDate="1j", endDate=None, filename="Euro Stoxx 50", ID=13320012, type="Index")
